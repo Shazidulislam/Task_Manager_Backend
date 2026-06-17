@@ -1,4 +1,3 @@
-import User from "../model/User.js";
 import validator from "validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -10,7 +9,7 @@ const TOKEN_EXPIRES = "24h";
 const createToken=(userId)=>jwt.sign({id:userId}, JWT_SECRET , {expiresIn:TOKEN_EXPIRES});
 
 // Register Funtion
-const registerUser = async (req, res) => {
+ export const registerUser=async(req, res)=>{
   const { name, email, password } = req.body;
 
   // Check required fields
@@ -66,18 +65,13 @@ const registerUser = async (req, res) => {
     });
   }
 };
-export default registerUser;
-
-
-
-
 
 
 
 
 
 // LOGIN FUNTION
-const loginUser=async(req , res)=>{
+export const   loginUser=async(req , res)=>{
   // Get email and password from request body
       const {email , password} = req.body;
     // Check if email and password are provided
@@ -92,7 +86,7 @@ const loginUser=async(req , res)=>{
       try{
         const user = await User.findOne({email});
         if(!user){
-            return res.status(400).json({success:false ,
+            return res.status(401).json({success:false ,
                 message:"Invalid email"
              })
         }
@@ -130,22 +124,13 @@ const loginUser=async(req , res)=>{
       }
 
 }
-export default loginUser;
-
-
-
-
-
-
-
-
 
 
 
 // Get Current User
-const getCurrentUser=async(req, res)=>{
+export const getCurrentUser=async(req, res)=>{
   try{
-    const User = await User.findById(req.user.id).select("name email");
+    const user = await User.findById(req.user.id).select("name email");
 
     if(!user){
       return res.status(400).json({success:false , message:"User not found"});
@@ -158,19 +143,10 @@ const getCurrentUser=async(req, res)=>{
         res.status(500).json({success:false , message:"Server Error"})
       }
 }
-export default getCurrentUser;
-
-
-
-
-
-
-
-
 
 
 //Update User profile
-const updateProfile = async(req , res)=>{
+export const updateProfile=async(req , res)=>{
     // Get email and password from request body
       const {name , email} = req.body;
 
@@ -210,13 +186,8 @@ const updateProfile = async(req , res)=>{
 
 
 
-
-
-
-
-
 //change Password Funtion
-const updatePassword = async (req, res) => {
+export const updatePassword=async(req, res)=>{
   const { currentPassword, newPassword } = req.body;
 
   if (!currentPassword || !newPassword || newPassword.length < 6) {
