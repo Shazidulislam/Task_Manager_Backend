@@ -1,4 +1,4 @@
-import Task from "../model/taskModel";
+import Task from "../model/taskModel.js";
 
 // Create a new Task || post 
 export const createTask = async (req, res) => {
@@ -25,7 +25,7 @@ export const createTask = async (req, res) => {
       priority,
       dueDate,
       completed,
-      owner: req.user._id,
+      owner: req.user._id  
     });
     const saved = await task.save();
     res.status(201).json({

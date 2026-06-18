@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv, { config } from "dotenv";
 import connectDB from "./config/db.js";
 import userRouter from "./routes/userRoute.js";
+import taskRouter from "./routes/taskRoute.js";
 const app = express();
 const PORT = process.env.PORT || 8000
 
@@ -13,8 +14,11 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 // DB Connect
 await connectDB()
+
+
 // routes
 app.use("/api/user" ,userRouter)
+app.use("/api/tasks" ,taskRouter)
 
 app.get("/" ,(req , res)=>{
     res.send("API WORKing");
